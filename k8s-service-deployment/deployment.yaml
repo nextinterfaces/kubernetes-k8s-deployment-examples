@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-node-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sample-node-app
+  template:
+    metadata:
+      labels:
+        app: sample-node-app
+    spec:
+      containers:
+        - name: node
+          image: bitnami/node:latest
+          env:
+            - name: PORT
+              value: "3000"
+          ports:
+            - containerPort: 3000
+          command: ["node"]
+          args: ["-e", "const http = require('http'); const server = http.createServer((req, res) => { res.end('Hello from Kubernetes Node App!'); }); server.listen(3000);"]
